@@ -11,11 +11,14 @@ namespace thisismedieval
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Texture2D rectangleBlock;
+        GameConstant gameConstant;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
         }
 
         /// <summary>
@@ -27,7 +30,7 @@ namespace thisismedieval
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            gameConstant = new GameConstant(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             base.Initialize();
         }
 
@@ -39,7 +42,9 @@ namespace thisismedieval
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            rectangleBlock = new Texture2D(GraphicsDevice, 1, 1);
+            Microsoft.Xna.Framework.Color xnaColorBorder = new Microsoft.Xna.Framework.Color(128, 128, 128); // default color gray 
+            rectangleBlock.SetData(new[] { xnaColorBorder });
             // TODO: use this.Content to load your game content here
         }
 
@@ -75,9 +80,25 @@ namespace thisismedieval
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            DrawMainMenu();
 
             base.Draw(gameTime);
         }
+
+        protected void DrawMainMenu()
+        {
+            float wel =(float) 0.25*(3 + 5 * Menu.NumButtonElemMenu);
+            int widthElem = (int)(gameConstant.ScreenWidth / wel);
+            int heightEelem = (int)(0.5 * widthElem);
+            int xMargin = (int) widthElem / 2;
+            int yMargin =(int) (gameConstant.ScreenHeight - 1.5*heightEelem) ;
+            int step = (int) widthElem + widthElem / 4;
+
+            for (int i = 0; i < Menu.NumButtonElemMenu; i++)
+            {
+                Menu.buttonElem(rectangleBlock, spriteBatch, step * i + xMargin, yMargin, widthElem, heightEelem);
+            }
+        }
+
     }
 }
